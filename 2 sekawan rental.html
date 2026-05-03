@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2 SEKAWAN - Rental Mobil Modern Makassar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; }
+        .glass-nav { background: rgba(255, 255, 255, 0.8); backdrop-filter: blsur(12px); -webkit-backdrop-filter: blur(12px); }
+        .hero-gradient { background: radial-gradient(circle at top right, #2e7d32, #1b5e20, #0a2b0d); }
+        .car-card { transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .car-card:hover { transform: translateY(-12px); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15); }
+        
+        /* Notifikasi Animasi */
+        #notification-toast {
+            visibility: hidden;
+            min-width: 250px;
+            background-color: #059669;
+            color: #fff;
+            text-align: center;
+            border-radius: 12px;
+            padding: 16px;
+            position: fixed;
+            z-index: 100;
+            right: 30px;
+            top: 30px;
+            font-weight: bold;
+        }
+        #notification-toast.show {
+            visibility: visible;
+            animation: fadeInOut 3s ease-in-out;
+        }
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; transform: translateY(-20px); }
+            10%, 90% { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-900">
+
+    <div id="notification-toast">Mengalihkan ke WhatsApp Admin...</div>
+
+    <nav class="glass-nav fixed w-full top-0 z-50 border-b border-white/20">
+        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-baseline gap-2">
+                <span class="text-2xl font-extrabold tracking-tighter text-green-700">2 SEKAWAN</span>
+                <span class="text-[10px] uppercase tracking-widest text-slate-500 font-bold">Makassar</span>
+            </div>
+            <div class="hidden md:flex items-center space-x-8 text-sm font-bold tracking-wide">
+                <a href="#home" class="hover:text-green-600 transition">HOME</a>
+                <a href="#cars" class="hover:text-green-600 transition">kendaraan</a>
+                <a href="https://wa.me/6282193796939" target="_blank" class="bg-green-600 text-white px-6 py-2.5 rounded-full shadow-lg hover:scale-105 transition">HUBUNGI KAMI</a>
+            </div>
+        </div>
+    </nav>
+
+    <section id="home" class="hero-gradient min-h-[85vh] flex items-center pt-20">
+        <div class="container mx-auto px-6 grid md:grid-cols-2 gap-12 items-center">
+            <div class="animate__animated animate__fadeInUp">
+                <h2 class="text-5xl md:text-7xl font-extrabold text-white leading-tight mb-6">Sewa Mobil <br><span class="text-green-400">Tanpa Ribet.</span></h2>
+                <p class="text-gray-300 text-lg mb-8 max-w-lg">Pilih armada, hitung harga, dan pesan langsung via WhatsApp. Fast response 24 jam untuk wilayah Makassar.</p>
+                <a href="#cars" class="bg-white text-green-900 px-8 py-4 rounded-2xl font-bold shadow-xl hover:bg-green-50 transition inline-block">Cek Katalog Mobil</a>
+            </div>
+            <div class="relative animate__animated animate__fadeInRight hidden md:block">
+                <img src="gambar 1.png" alt="Hero Car" class="relative z-10 w-full drop-shadow-[0_35px_35px_rgba(0,0,0,0.5)]">
+            </div>
+        </div>
+    </section>
+
+    <section id="cars" class="py-24 bg-white">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h3 class="text-4xl font-extrabold mb-4 tracking-tight">Pilih Armada</h3>
+                <div class="w-20 h-1 bg-green-600 mx-auto mb-6 rounded-full"></div>
+            </div>
+
+            <div class="flex flex-wrap justify-center gap-3 mb-12">
+                <button onclick="renderCars('semua')" class="px-6 py-2 rounded-full border border-slate-200 hover:bg-green-600 hover:text-white focus:bg-green-700 focus:text-white transition font-bold text-sm">Semua</button>
+                <button onclick="renderCars('ekonomis')" class="px-6 py-2 rounded-full border border-slate-200 hover:bg-green-600 hover:text-white focus:bg-green-700 focus:text-white transition font-bold text-sm">Ekonomis</button>
+                <button onclick="renderCars('premium')" class="px-6 py-2 rounded-full border border-slate-200 hover:bg-green-600 hover:text-white focus:bg-green-700 focus:text-white transition font-bold text-sm">Premium</button>
+            </div>
+
+            <div id="car-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                </div>
+        </div>
+    </section>
+
+    <footer class="bg-slate-900 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-slate-400 text-sm tracking-widest uppercase">© 2026 Rental 2 Sekawan Makassar</p>
+        </div>
+    </footer>
+
+    <script>
+        /**
+         */
+        const carData = [
+            { id: 'avanza', name: 'Avanza 2021', price: 250000, cat: 'ekonomis', img: 'gambar 6.jpg' },
+            { id: 'veloz', name: 'All New Veloz', price: 250000, cat: 'ekonomis', img: 'gambar 4.jpg' },
+            { id: 'innova', name: 'Innova Reborn', price: 250000, cat: 'ekonomis', img: 'gambar mobil saya.png' },
+            { id: 'fortuner', name: 'Fortuner VRZ', price: 250000, cat: 'premium', img: 'gambar 7.jpg' },
+            { id: 'hulux', name: 'toyota hulux', price: 250000, cat: 'ekonomis', img: 'gambar 5.jpg' },
+            { id: 'alphard', name: 'Toyota Alphard', price: 300000, cat: 'premium', img: 'gambar 3.jpg' },
+            
+            
+        ];
+
+        const adminPhone = "6282193796939"; // Nomor WhatsApp Admin
+
+        function renderCars(filter = 'all') {
+            const list = document.getElementById('car-list');
+            list.innerHTML = '';
+            const filtered = filter === 'all' ? carData : carData.filter(c => c.cat === filter);
+
+            filtered.forEach(car => {
+                list.innerHTML += `
+                    <div class="car-card bg-white rounded-[2.5rem] p-5 border border-slate-100 flex flex-col h-full animate__animated animate__fadeIn">
+                        <div class="rounded-[2rem] overflow-hidden h-48 mb-6 shadow-inner bg-slate-200">
+                            <img src="${car.img}" class="w-full h-full object-cover">
+                        </div>
+                        <div class="px-2 flex-grow text-center lg:text-left">
+                            <h4 class="text-2xl font-extrabold mb-1">${car.name}</h4>
+                            <p class="text-slate-500 text-xs mb-4 uppercase tracking-widest font-bold">Rp ${car.price.toLocaleString('id-ID')} / Hari</p>
+                            
+                            <div class="bg-slate-50 rounded-2xl p-4 border border-slate-100 mb-6">
+                                <label class="text-[10px] font-bold text-slate-400 block mb-2 uppercase">Durasi Sewa</label>
+                                <div class="flex items-center justify-between">
+                                    <button onclick="updateQty('${car.id}', -1, ${car.price})" class="w-10 h-10 flex items-center justify-center bg-white border border-slate-200 rounded-xl hover:bg-red-50 transition">-</button>
+                                    <span id="qty-${car.id}" class="text-xl font-bold px-4">1</span>
+                                    <button onclick="updateQty('${car.id}', 1, ${car.price})" class="w-10 h-10 flex items-center justify-center bg-white border border-slate-200 rounded-xl hover:bg-green-50 transition">+</button>
+                                </div>
+                            </div>
+
+                            <div class="mb-6">
+                                <span class="text-[10px] font-bold text-slate-400 block uppercase">Total Pembayaran</span>
+                                <span class="text-2xl font-black text-green-700" id="total-${car.id}">Rp ${car.price.toLocaleString('id-ID')}</span>
+                            </div>
+                        </div>
+                        <button onclick="placeOrder('${car.name}', ${car.price}, '${car.id}')" class="w-full py-4 rounded-2xl bg-green-700 text-white font-bold hover:bg-slate-900 transition-all shadow-lg active:scale-95 flex justify-center items-center gap-2">
+                            PESAN MOBIL
+                        </button>
+                    </div>
+                `;
+            });
+        }
+
+        function updateQty(id, change, price) {
+            const q = document.getElementById(`qty-${id}`);
+            const t = document.getElementById(`total-${id}`);
+            let val = parseInt(q.innerText) + change;
+            if (val < 1) val = 1;
+            q.innerText = val;
+            t.innerText = `Rp ${(val * price).toLocaleString('id-ID')}`;
+        }
+
+        /**
+        
+         */
+        function placeOrder(name, price, id) {
+            const qty = document.getElementById(`qty-${id}`).innerText;
+            const total = qty * price;
+            
+            
+            const toast = document.getElementById('notification-toast');
+            toast.className = "show";
+            setTimeout(() => { toast.className = toast.className.replace("show", ""); }, 3000);
+
+            // Format Pesan (Sistem Notifikasi Admin)
+            // Menggunakan Bold (*) agar admin mudah membaca poin penting
+            const message = `*PESANAN BARU - RENTAL 2 SEKAWAN*%0A` +
+                            `------------------------------------%0A` +
+                            `🚗 *Unit:* ${name}%0A` +
+                            `⏱️ *Durasi:* ${qty} Hari%0A` +
+                            `💰 *Total Tagihan:* Rp ${total.toLocaleString('id-ID')}%0A` +
+                            `------------------------------------%0A` +
+                            `Halo kak, saya ingin menyewa unit ini. Apakah tersedia?`;
+
+        
+            setTimeout(() => {
+                window.open(`https://wa.me/${adminPhone}?text=${message}`, '_blank');
+            }, 800); // Delay sedikit agar user sempat melihat notifikasi
+        }
+
+        renderCars();
+    </script>
+</body>
+</html>
